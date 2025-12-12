@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {useRoutes} from 'hookrouter';
+import { useRoutes } from 'hookrouter';
 import ReactGA from 'react-ga';
 
-import {config} from './config.json';
+import configData from './config.json';
 
 import './fonts/HyliaSerifBeta-Regular.otf'
 
@@ -118,6 +118,8 @@ import firstBlog from './blogs/first-blog.jsx';
 import makingBlog from './blogs/making-map-blog.jsx';
 import eotwBlog from './blogs/why-eotw-works.jsx';
 
+const { config } = configData;
+
 let blogposts = [
     {
         title: "Why The Eye of the World Works",
@@ -154,7 +156,7 @@ ReactGA.initialize(config['GA']);
 
 const routes = {
     "/": () => <Page title="Wheel of Timelines" description="Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!" element={<Home />} />,
-    "/blog": () => <Page title="Wheel of Timelines - Blog" description="Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!" element={<Blog posts={blogposts}/>} />,
+    "/blog": () => <Page title="Wheel of Timelines - Blog" description="Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!" element={<Blog posts={blogposts} />} />,
     "/quizzes": () => <Page title="Wheel of Timelines - Quizzes" description="Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!" element={<QuizCollection quizzes={quizzes} />} />,
     "/map": () => <Map />,
     "/timeline": () => <Page title="Wheel of Timelines - Timeline" description="Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!" element={<TimelinePage />} />
@@ -164,44 +166,44 @@ for (let i = 0; i < quizzes.length; i++) {
     let link = '/quizzes/' + quizzes[i].title.replace(/ /g, "_");
     quizzes[i].link = link
     if (quizzes[i].type === "score") {
-        routes[link] = () => 
-            <Page 
-                title={quizzes[i].title} 
-                description = {quizzes[i].title} 
-                element={<ScoreQuiz data={quizzes[i]}/>} 
+        routes[link] = () =>
+            <Page
+                title={quizzes[i].title}
+                description={quizzes[i].title}
+                element={<ScoreQuiz data={quizzes[i]} />}
             />
     }
     else if (quizzes[i].type === "personality") {
-        routes[link] = () => 
-            <Page 
-                title={quizzes[i].title} 
-                description = {quizzes[i].title}
-                element={<PersonalityQuiz data={quizzes[i]}/>} 
+        routes[link] = () =>
+            <Page
+                title={quizzes[i].title}
+                description={quizzes[i].title}
+                element={<PersonalityQuiz data={quizzes[i]} />}
             />
     }
     else if (quizzes[i].type === "drop") {
-        routes[link] = () => 
-            <Page 
-                title={quizzes[i].title} 
-                description = {quizzes[i].title}
-                element={<DropQuiz data={quizzes[i]}/>} 
+        routes[link] = () =>
+            <Page
+                title={quizzes[i].title}
+                description={quizzes[i].title}
+                element={<DropQuiz data={quizzes[i]} />}
             />
     }
-    
+
 }
 
 for (let i = 0; i < blogposts.length; i++) {
     let link = '/blog/' + blogposts[i].title.replace(/ /g, "_");
     blogposts[i].link = link
-    routes[link] = () => <Page title={"Wheel of Timelines - " + blogposts[i].title} 
-                               description="A Blog post from Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!"
-                               element={<BlogPost data={blogposts[i]}/>}
-                          />
+    routes[link] = () => <Page title={"Wheel of Timelines - " + blogposts[i].title}
+        description="A Blog post from Wheel of Timelines - The best Wheel of time map with timeline, plus quizzes and a blog!"
+        element={<BlogPost data={blogposts[i]} />}
+    />
 }
 
 const RouteManager = () => {
     const routeResult = useRoutes(routes);
-    
+
     ReactGA.pageview(window.location.pathname + window.location.search)
 
     return routeResult || <NotFoundPage />;

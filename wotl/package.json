@@ -2,6 +2,8 @@
   "name": "wotl",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "public/electron.js",
   "dependencies": {
     "@material-ui/core": "^4.11.1",
     "@material-ui/icons": "^4.11.2",
@@ -11,9 +13,9 @@
     "@testing-library/user-event": "^12.2.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "electron-is-dev": "2.0.0",
     "hookrouter": "^1.2.3",
     "konva": "^7.2.0",
-    "node-sass": "^4.14.1",
     "point-in-svg-path": "^1.0.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
@@ -24,19 +26,47 @@
     "react-ga": "^3.3.0",
     "react-helmet": "^6.1.0",
     "react-konva": "^17.0.0-0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "5.0.1",
     "react-share": "^4.3.1",
     "source-map-explorer": "^2.5.2",
     "universal-cookie": "^4.0.4",
     "use-clippy": "^1.0.8",
     "web-vitals": "^0.2.4"
   },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "concurrently": "^9.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "json-loader": "^0.5.7",
+    "sass": "^1.83.0",
+    "url": "^0.11.4",
+    "wait-on": "^8.0.1"
+  },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "craco start",
+    "build": "craco build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:build": "npm run build && electron-builder build --mac"
+  },
+  "build": {
+    "appId": "com.wheeloftimelines.app",
+    "productName": "Wheel of Timelines",
+    "mac": {
+      "category": "public.app-category.reference",
+      "target": "dmg"
+    },
+    "files": [
+      "build/**/*",
+      "public/electron.js"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   },
   "eslintConfig": {
     "extends": [
